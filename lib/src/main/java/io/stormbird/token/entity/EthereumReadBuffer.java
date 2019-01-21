@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import io.stormbird.token.tools.Numeric;
@@ -94,6 +95,20 @@ public class EthereumReadBuffer extends DataInputStream
     public long toUnsignedLong(int i) throws IOException
     {
         return i & 0x00000000ffffffffL; // long is always 64 bits
+    }
+
+    public List<BigInteger> getTokenIds(byte[] linkBytes)
+    {
+        int sigPos = linkBytes.length - 65;
+        int tokenPos = 28;
+        byte[] tokenIdBytes = Arrays.copyOfRange(linkBytes, tokenPos, sigPos);
+        List<BigInteger> tokenIds = new ArrayList<>();
+        for(int i = 0; i < tokenIdBytes.length; i += 32)
+        {
+            BigInteger tokenId = new BigInteger(Arrays.copyOfRange(tokenIdBytes, i, i + 32));
+            tokenIds.add(tokenId);
+        }
+        return tokenIds;
     }
 
     public int[] readCompressedIndices(int indiciesLength) throws IOException

@@ -27,6 +27,11 @@ public class ParseMagicLink
 {
     public final static BigInteger maxPrice = Convert.toWei(BigDecimal.valueOf(0xFFFFFFFFL),
                                                             Convert.Unit.SZABO).toBigInteger();
+    //link formats
+    public static final byte oldFormat = 0x00;
+    public static final byte notSpawnable = 0x01;
+    public static final byte spawnable = 0x02;
+    public static final byte customizable = 0x03;
 
     private CryptoFunctionsInterface cryptoInterface;
 
@@ -119,7 +124,8 @@ public class ParseMagicLink
 
             switch (data.contractType)
             {
-                case 0x00:
+                //TODO fill out for all formats
+                case oldFormat:
                     data.contractType = 1;
                     ds.reset();
                     break;
